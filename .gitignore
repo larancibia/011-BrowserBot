@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+*.egg-info/
+dist/
+build/
+
+# Playwright
+.playwright-state/
+screenshots/
+*.png
+*.jpg
+
+# Cookies and sensitive data
+cookies.json
+turboscribe-cookies.json
+*.cookie
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Node (if any)
+node_modules/
