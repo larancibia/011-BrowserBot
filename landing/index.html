@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BrowserBot - Autonomous Web Agent. Vision-based navigation, AI reasoning, intelligent automation. DeepSeek R1 + LLaVA powered MCP Server for Claude Desktop.">
+    <meta name="keywords" content="BrowserBot, MCP Server, Claude Desktop, Web Agent, AI Automation, Vision AI, Autonomous Browser, DeepSeek, LLaVA">
+    <meta name="author" content="GuanacoLabs">
+    <meta name="theme-color" content="#0F172A">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="BrowserBot - Autonomous Web Agent for Claude Desktop">
+    <meta property="og:description" content="Vision-based autonomous web agent. Navigate, interact, and automate websites with AI reasoning.">
+    <meta property="og:image" content="https://11-browserbot.example.com/og-image.png">
+    <meta property="og:url" content="https://11-browserbot.example.com">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BrowserBot - Autonomous Web Agent">
+    <meta name="twitter:description" content="Vision-based autonomous web agent for Claude Desktop">
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX', {
+            'page_path': window.location.pathname,
+            'anonymize_ip': true
+        });
+    </script>
+
+    <title>BrowserBot - Autonomous Web Agent | AI-Powered Browser Automation</title>
+
+    <!-- Tailwind Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'slate-darker': '#0F172A',
+                        'slate-dark': '#1E293B',
+                        'slate-light': '#334155',
+                        'indigo-primary': '#6366F1',
+                        'indigo-bright': '#818CF8',
+                        'cyan-accent': '#06B6D4',
+                        'orange-warm': '#F97316',
+                        'emerald-success': '#10B981',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif'],
+                        'mono': ['JetBrains Mono', 'monospace'],
+                    },
+                    backgroundImage: {
+                        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+                    },
+                    animation: {
+                        'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'slide-up': 'slide-up 0.6s ease-out',
+                    },
+                    keyframes: {
+                        'pulse-glow': {
+                            '0%, 100%': { opacity: '1', boxShadow: '0 0 20px rgba(99, 102, 241, 0.4)' },
+                            '50%': { opacity: '0.8', boxShadow: '0 0 40px rgba(99, 102, 241, 0.2)' },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        'slide-up': {
+                            'from': { opacity: '0', transform: 'translateY(30px)' },
+                            'to': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * { box-sizing: border-box; }
+        body { font-feature-settings: "rlig" 1, "calt" 1; }
+        
+        /* Gradient text */
+        .gradient-text-primary {
+            background: linear-gradient(135deg, #6366F1 0%, #06B6D4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-text-warm {
+            background: linear-gradient(135deg, #F97316 0%, #FB923C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Gradient backgrounds */
+        .gradient-bg-primary {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+        }
+        
+        .gradient-bg-dark {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        }
+        
+        /* Cards */
+        .card-glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-glass:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        
+        /* Code blocks */
+        pre {
+            background: rgba(15, 23, 42, 0.8) !important;
+            border: 1px solid rgba(99, 102, 241, 0.2) !important;
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.5); }
+        ::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.5); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.7); }
+        
+        /* Hero glow effect */
+        .hero-glow {
+            position: absolute;
+            top: -40%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(40px);
+            pointer-events: none;
+            animation: float 8s ease-in-out infinite;
+        }
+        
+        .hero-glow-2 {
+            position: absolute;
+            bottom: -20%;
+            left: -15%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(40px);
+            pointer-events: none;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+        
+        /* Smooth scroll */
+        html { scroll-behavior: smooth; }
+        
+        /* Button animations */
+        .btn-glow {
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-glow:hover {
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.6);
+            transform: translateY(-2px);
+        }
+        
+        /* Smooth fade-in */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+        
+        .fade-in-1 { animation-delay: 0.1s; }
+        .fade-in-2 { animation-delay: 0.2s; }
+        .fade-in-3 { animation-delay: 0.3s; }
+        .fade-in-4 { animation-delay: 0.4s; }
+        .fade-in-5 { animation-delay: 0.5s; }
+    </style>
+</head>
+<body class="bg-slate-darker text-slate-100 overflow-x-hidden">
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-slate-darker/80 backdrop-blur-md border-b border-slate-light/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-indigo-primary to-cyan-accent rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold gradient-text-primary">BrowserBot</span>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#features" class="text-slate-300 hover:text-indigo-bright transition text-sm font-medium">Features</a>
+                    <a href="#how-it-works" class="text-slate-300 hover:text-indigo-bright transition text-sm font-medium">How It Works</a>
+                    <a href="#installation" class="text-slate-300 hover:text-indigo-bright transition text-sm font-medium">Install</a>
+                    <a href="#pricing" class="text-slate-300 hover:text-indigo-bright transition text-sm font-medium">Pricing</a>
+                </div>
+                
+                <div class="flex items-center gap-3">
+                    <a href="https://github.com/guanacolabs/011-browserbot" target="_blank" rel="noopener" class="hidden sm:inline-flex text-slate-300 hover:text-indigo-bright transition text-sm font-medium">
+                        GitHub
+                    </a>
+                    <a href="#installation" class="bg-indigo-primary text-white px-6 py-2 rounded-lg hover:bg-indigo-bright transition text-sm font-semibold btn-glow">
+                        Get Started
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 overflow-hidden">
+        <div class="hero-glow"></div>
+        <div class="hero-glow-2"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center fade-in">
+                <div class="inline-flex items-center gap-2 bg-indigo-primary/10 border border-indigo-primary/30 rounded-full px-4 py-2 mb-8 fade-in fade-in-1">
+                    <span class="relative flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-primary opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-indigo-bright"></span>
+                    </span>
+                    <span class="text-sm font-semibold text-indigo-bright">Vision-Based Automation</span>
+                </div>
+                
+                <h1 class="text-5xl sm:text-6xl md:text-7xl font-black text-white mb-6 leading-tight fade-in fade-in-2">
+                    Your <span class="gradient-text-primary">AI Browser</span> is Ready
+                </h1>
+                
+                <p class="text-lg sm:text-xl text-slate-300 max-w-3xl mx-auto mb-8 leading-relaxed fade-in fade-in-3">
+                    BrowserBot brings autonomous web automation to Claude Desktop. Vision-based navigation, intelligent reasoning, and zero friction. Deploy in seconds.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center fade-in fade-in-4">
+                    <a href="#installation" class="bg-indigo-primary text-white px-8 py-4 rounded-lg hover:bg-indigo-bright transition font-semibold text-lg btn-glow inline-block">
+                        Install Now
+                    </a>
+                    <a href="https://github.com/guanacolabs/011-browserbot" target="_blank" rel="noopener" class="bg-slate-light/20 border border-slate-light/30 text-white px-8 py-4 rounded-lg hover:border-indigo-primary/50 hover:bg-indigo-primary/10 transition font-semibold text-lg inline-block">
+                        View on GitHub
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Hero Image/Code Block -->
+            <div class="mt-16 fade-in fade-in-5">
+                <div class="card-glass rounded-2xl p-8 max-w-4xl mx-auto border border-indigo-primary/20">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-mono text-indigo-bright">browserbot_example.py</span>
+                        <span class="text-xs text-slate-400">Quick Install</span>
+                    </div>
+                    <pre class="text-sm text-slate-300 overflow-x-auto"><code class="language-python">pip install browserbot-mcp
+
+# In Claude Desktop config (~/.claude/claude_desktop_config.json)
+{
+  "mcpServers": {
+    "browserbot": {
+      "command": "browserbot-mcp",
+      "args": ["--headless"]
+    }
+  }
+}
+
+# Now use in Claude: "Open browser and navigate to example.com"
+# BrowserBot handles the rest with vision + reasoning</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Stats -->
+    <section class="py-16 bg-slate-dark/50 border-y border-slate-light/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="text-center">
+                    <div class="text-3xl md:text-4xl font-bold gradient-text-primary mb-2">99%</div>
+                    <p class="text-slate-400 text-sm">Detection Avoidance</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl md:text-4xl font-bold gradient-text-primary mb-2">2-5s</div>
+                    <p class="text-slate-400 text-sm">Per Action Step</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl md:text-4xl font-bold gradient-text-primary mb-2">0</div>
+                    <p class="text-slate-400 text-sm">Manual Coding</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl md:text-4xl font-bold gradient-text-primary mb-2">24GB</div>
+                    <p class="text-slate-400 text-sm">GPU Required Min</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    Powered by <span class="gradient-text-primary">Cutting-Edge AI</span>
+                </h2>
+                <p class="text-lg text-slate-400 max-w-2xl mx-auto">
+                    Combines vision understanding and chain-of-thought reasoning for intelligent automation
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- Vision Feature -->
+                <div class="card-glass rounded-2xl p-8 border border-indigo-primary/20 hover:border-indigo-primary/50 transition">
+                    <div class="w-12 h-12 bg-indigo-primary/20 rounded-xl flex items-center justify-center mb-6 text-2xl">
+                        👁️
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Vision-Based Navigation</h3>
+                    <p class="text-slate-300 mb-6">
+                        LLaVA 7B analyzes screenshots in real-time, detecting buttons, text, and UI elements with human-level accuracy. No brittle selectors needed.
+                    </p>
+                    <ul class="space-y-3 text-slate-400 text-sm">
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Real-time screenshot analysis
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Coordinate detection
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Multi-language OCR support
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Reasoning Feature -->
+                <div class="card-glass rounded-2xl p-8 border border-indigo-primary/20 hover:border-indigo-primary/50 transition">
+                    <div class="w-12 h-12 bg-indigo-primary/20 rounded-xl flex items-center justify-center mb-6 text-2xl">
+                        🧠
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Chain-of-Thought Reasoning</h3>
+                    <p class="text-slate-300 mb-6">
+                        DeepSeek R1:8b thinks through problems step-by-step, planning complex interactions with human-like logic and error recovery.
+                    </p>
+                    <ul class="space-y-3 text-slate-400 text-sm">
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Multi-step task planning
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Automatic error recovery
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Context awareness
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- MCP Integration -->
+                <div class="card-glass rounded-2xl p-8 border border-indigo-primary/20 hover:border-indigo-primary/50 transition">
+                    <div class="w-12 h-12 bg-indigo-primary/20 rounded-xl flex items-center justify-center mb-6 text-2xl">
+                        🔌
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Claude Desktop Integration</h3>
+                    <p class="text-slate-300 mb-6">
+                        Native MCP Server implementation. Works seamlessly with Claude Desktop. One command install, zero configuration hassle.
+                    </p>
+                    <ul class="space-y-3 text-slate-400 text-sm">
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Zero setup MCP Server
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Drop-in replacement for web access
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Works with existing claude_desktop_config.json
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Stealth Mode -->
+                <div class="card-glass rounded-2xl p-8 border border-indigo-primary/20 hover:border-indigo-primary/50 transition">
+                    <div class="w-12 h-12 bg-indigo-primary/20 rounded-xl flex items-center justify-center mb-6 text-2xl">
+                        👻
+                    </div>
+                    <h3 class="text-2xl font-bold text-white mb-4">Anti-Detection Tech</h3>
+                    <p class="text-slate-300 mb-6">
+                        Real browser automation with Playwright. No puppeteer headless flags, real user-agent rotation, legitimate interaction patterns.
+                    </p>
+                    <ul class="space-y-3 text-slate-400 text-sm">
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Chromium-based automation
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Human-like delays & behavior
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> JavaScript enabled
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="py-20 bg-slate-dark/50 border-t border-slate-light/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    How BrowserBot <span class="gradient-text-primary">Works</span>
+                </h2>
+                <p class="text-lg text-slate-400">The complete automation pipeline in 4 stages</p>
+            </div>
+            
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="card-glass rounded-xl p-6 border border-indigo-primary/20">
+                    <div class="text-4xl font-black text-indigo-primary mb-4">1</div>
+                    <h4 class="text-lg font-bold text-white mb-3">Screenshot</h4>
+                    <p class="text-slate-400 text-sm">Browser captures full page screenshot with current state</p>
+                </div>
+                
+                <div class="card-glass rounded-xl p-6 border border-indigo-primary/20">
+                    <div class="text-4xl font-black text-indigo-primary mb-4">2</div>
+                    <h4 class="text-lg font-bold text-white mb-3">Vision Analysis</h4>
+                    <p class="text-slate-400 text-sm">LLaVA 7B analyzes image and describes all interactive elements</p>
+                </div>
+                
+                <div class="card-glass rounded-xl p-6 border border-indigo-primary/20">
+                    <div class="text-4xl font-black text-indigo-primary mb-4">3</div>
+                    <h4 class="text-lg font-bold text-white mb-3">AI Reasoning</h4>
+                    <p class="text-slate-400 text-sm">DeepSeek R1 decides best next action with chain-of-thought</p>
+                </div>
+                
+                <div class="card-glass rounded-xl p-6 border border-indigo-primary/20">
+                    <div class="text-4xl font-black text-indigo-primary mb-4">4</div>
+                    <h4 class="text-lg font-bold text-white mb-3">Execute</h4>
+                    <p class="text-slate-400 text-sm">Playwright performs click, type, scroll with human timing</p>
+                </div>
+            </div>
+            
+            <!-- Detailed Flow -->
+            <div class="mt-16 card-glass rounded-2xl p-8 border border-indigo-primary/20">
+                <div class="space-y-8">
+                    <div class="flex gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-primary/20 text-indigo-bright">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="text-lg font-semibold text-white mb-2">Instant Deployment</h5>
+                            <p class="text-slate-400">Install via pip, configure in claude_desktop_config.json, restart Claude Desktop. Done in under 1 minute.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-primary/20 text-indigo-bright">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="text-lg font-semibold text-white mb-2">Real-Time Execution</h5>
+                            <p class="text-slate-400">Claude sends task → BrowserBot analyzes → executes → returns results. Full transparency in terminal and logs.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-6">
+                        <div class="flex-shrink-0">
+                            <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-primary/20 text-indigo-bright">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div>
+                            <h5 class="text-lg font-semibold text-white mb-2">Fully Customizable</h5>
+                            <p class="text-slate-400">Adjust reasoning model size, vision accuracy, timeout settings, and browser profiles from simple config files.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="installation" class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    <span class="gradient-text-primary">Install</span> in 60 Seconds
+                </h2>
+                <p class="text-lg text-slate-400">All prerequisites. All steps. No headaches.</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto">
+                <!-- Prerequisites -->
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold text-white mb-6">Prerequisites</h3>
+                    <div class="card-glass rounded-xl p-6 border border-amber-600/30 bg-amber-600/5 mb-4">
+                        <div class="flex gap-3">
+                            <span class="text-amber-500 flex-shrink-0 mt-0.5">⚠️</span>
+                            <div>
+                                <p class="text-white font-semibold mb-2">GPU Requirement</p>
+                                <p class="text-slate-300 text-sm">NVIDIA GPU with minimum 24GB VRAM (tested on RTX 3090, A6000, H100)</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-4 card-glass rounded-lg">
+                            <span class="text-lg">🐳</span>
+                            <div>
+                                <p class="text-white font-semibold">Ollama</p>
+                                <p class="text-slate-400 text-sm">Download from ollama.ai - our LLM inference engine</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-4 card-glass rounded-lg">
+                            <span class="text-lg">🐍</span>
+                            <div>
+                                <p class="text-white font-semibold">Python 3.10+</p>
+                                <p class="text-slate-400 text-sm">Required for pip install and browser automation</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 p-4 card-glass rounded-lg">
+                            <span class="text-lg">🎮</span>
+                            <div>
+                                <p class="text-white font-semibold">Claude Desktop</p>
+                                <p class="text-slate-400 text-sm">Download from claude.ai</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Installation Steps -->
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold text-white mb-6">Installation Steps</h3>
+                    
+                    <div class="space-y-6">
+                        <!-- Step 1 -->
+                        <div class="card-glass rounded-xl p-8 border border-indigo-primary/20">
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0">
+                                    <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-primary text-white font-bold">1</div>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-bold text-white mb-3">Start Ollama</h4>
+                                    <pre class="bg-slate-darker rounded p-4 text-slate-300 text-sm overflow-x-auto"><code>ollama serve</code></pre>
+                                    <p class="text-slate-400 text-sm mt-2">Keep this running in a separate terminal</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2 -->
+                        <div class="card-glass rounded-xl p-8 border border-indigo-primary/20">
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0">
+                                    <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-primary text-white font-bold">2</div>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-bold text-white mb-3">Pull AI Models</h4>
+                                    <pre class="bg-slate-darker rounded p-4 text-slate-300 text-sm overflow-x-auto"><code>ollama pull deepseek-r1:8b
+ollama pull llava:7b</code></pre>
+                                    <p class="text-slate-400 text-sm mt-2">Total size: ~12.5GB, runs in parallel, takes 10-30 min depending on internet</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3 -->
+                        <div class="card-glass rounded-xl p-8 border border-indigo-primary/20">
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0">
+                                    <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-primary text-white font-bold">3</div>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-bold text-white mb-3">Install BrowserBot</h4>
+                                    <pre class="bg-slate-darker rounded p-4 text-slate-300 text-sm overflow-x-auto"><code>pip install browserbot-mcp</code></pre>
+                                    <p class="text-slate-400 text-sm mt-2">Quick and clean. Installs Playwright and dependencies automatically</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 4 -->
+                        <div class="card-glass rounded-xl p-8 border border-indigo-primary/20">
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0">
+                                    <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-primary text-white font-bold">4</div>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-bold text-white mb-3">Configure Claude Desktop</h4>
+                                    <p class="text-slate-400 text-sm mb-3">Edit your config file at:</p>
+                                    <pre class="bg-slate-darker rounded p-4 text-slate-300 text-sm overflow-x-auto"><code>~/.claude/claude_desktop_config.json</code></pre>
+                                    <p class="text-slate-400 text-sm mt-3 mb-3">Add this to the mcpServers section:</p>
+                                    <pre class="bg-slate-darker rounded p-4 text-slate-300 text-sm overflow-x-auto"><code>{
+  "browserbot": {
+    "command": "browserbot-mcp",
+    "args": ["--headless"]
+  }
+}</code></pre>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 5 -->
+                        <div class="card-glass rounded-xl p-8 border border-indigo-primary/20">
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0">
+                                    <div class="flex items-center justify-center h-10 w-10 rounded-full bg-indigo-primary text-white font-bold">5</div>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-bold text-white mb-3">Restart & Test</h4>
+                                    <p class="text-slate-400 text-sm mb-3">Quit and reopen Claude Desktop. In Claude, type:</p>
+                                    <pre class="bg-slate-darker rounded p-4 text-slate-300 text-sm overflow-x-auto"><code>"Open browser and navigate to example.com"</code></pre>
+                                    <p class="text-slate-400 text-sm mt-2">BrowserBot will take it from here</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="py-20 bg-slate-dark/50 border-t border-slate-light/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    What Can You <span class="gradient-text-primary">Build</span>?
+                </h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card-glass rounded-xl p-8 border border-indigo-primary/20">
+                    <div class="text-4xl mb-4">🔐</div>
+                    <h4 class="text-xl font-bold text-white mb-3">Authentication Flows</h4>
+                    <p class="text-slate-400">Handle OAuth, multi-step login, CAPTCHA-free zones. Save cookies for later automation.</p>
+                </div>
+                
+                <div class="card-glass rounded-xl p-8 border border-indigo-primary/20">
+                    <div class="text-4xl mb-4">📋</div>
+                    <h4 class="text-xl font-bold text-white mb-3">Form Filling</h4>
+                    <p class="text-slate-400">Complex multi-page forms, dynamic field detection, validation error handling, submission confirmation.</p>
+                </div>
+                
+                <div class="card-glass rounded-xl p-8 border border-indigo-primary/20">
+                    <div class="text-4xl mb-4">🔍</div>
+                    <h4 class="text-xl font-bold text-white mb-3">Web Scraping</h4>
+                    <p class="text-slate-400">Extract structured data from any website. JavaScript rendering included. Pagination handling built-in.</p>
+                </div>
+                
+                <div class="card-glass rounded-xl p-8 border border-indigo-primary/20">
+                    <div class="text-4xl mb-4">📊</div>
+                    <h4 class="text-xl font-bold text-white mb-3">Data Entry</h4>
+                    <p class="text-slate-400">Batch import CSV to web apps. Smart field mapping. Error recovery without manual intervention.</p>
+                </div>
+                
+                <div class="card-glass rounded-xl p-8 border border-indigo-primary/20">
+                    <div class="text-4xl mb-4">🧪</div>
+                    <h4 class="text-xl font-bold text-white mb-3">E2E Testing</h4>
+                    <p class="text-slate-400">AI-powered testing. No brittle selectors. Adaptive to UI changes. Natural language test definitions.</p>
+                </div>
+                
+                <div class="card-glass rounded-xl p-8 border border-indigo-primary/20">
+                    <div class="text-4xl mb-4">🤖</div>
+                    <h4 class="text-xl font-bold text-white mb-3">Social Automation</h4>
+                    <p class="text-slate-400">Post scheduling, comment management, engagement analysis. Rate-limit aware. Anti-ban patterns.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Honest Limitations -->
+    <section class="py-20 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    What BrowserBot <span class="text-orange-warm">Cannot Do</span>
+                </h2>
+                <p class="text-lg text-slate-400">Brutal honesty about limitations. No BS.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="card-glass rounded-xl p-8 border border-orange-warm/30 bg-orange-warm/5">
+                    <h4 class="text-lg font-bold text-orange-warm mb-4">CAPTCHA Solving</h4>
+                    <p class="text-slate-400">Google reCAPTCHA v3 blocks automated solving. You need manual completion or third-party services. We can't bypass that.</p>
+                </div>
+                
+                <div class="card-glass rounded-xl p-8 border border-orange-warm/30 bg-orange-warm/5">
+                    <h4 class="text-lg font-bold text-orange-warm mb-4">Mobile-Only Sites</h4>
+                    <p class="text-slate-400">Some apps detect desktop browser and block access. Playwright has limited mobile emulation. Complex apps may fail.</p>
+                </div>
+                
+                <div class="card-glass rounded-xl p-8 border border-orange-warm/30 bg-orange-warm/5">
+                    <h4 class="text-lg font-bold text-orange-warm mb-4">Rate Limiting</h4>
+                    <p class="text-slate-400">Sites with aggressive rate limiting will block you. We add delays but can't defeat IP bans or account throttling.</p>
+                </div>
+                
+                <div class="card-glass rounded-xl p-8 border border-orange-warm/30 bg-orange-warm/5">
+                    <h4 class="text-lg font-bold text-orange-warm mb-4">GPU Cost</h4>
+                    <p class="text-slate-400">Needs 24GB VRAM minimum. RTX 4090 territory. Not for budget setups. Monthly cloud GPU costs will exist.</p>
+                </div>
+            </div>
+            
+            <div class="mt-12 card-glass rounded-xl p-8 border border-indigo-primary/20 max-w-3xl mx-auto">
+                <h4 class="text-lg font-bold text-white mb-4">We're Upfront</h4>
+                <p class="text-slate-300">
+                    BrowserBot is powerful but not magical. We use Playwright (a real browser), which means you inherit all the limitations of web automation. 
+                    Sites with advanced bot detection will still block you. We're fighting within the rules of the internet, not breaking them.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 bg-slate-dark/50 border-t border-slate-light/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold text-white mb-4">
+                    Simple <span class="gradient-text-primary">Pricing</span>
+                </h2>
+                <p class="text-lg text-slate-400">One-time license. Forever support.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Starter -->
+                <div class="card-glass rounded-2xl p-8 border border-indigo-primary/20 hover:border-indigo-primary/50 transition">
+                    <h3 class="text-2xl font-bold text-white mb-2">Open Source</h3>
+                    <p class="text-slate-400 text-sm mb-6">MIT Licensed</p>
+                    
+                    <div class="text-4xl font-bold text-white mb-6">
+                        $0<span class="text-lg text-slate-400 font-normal">/forever</span>
+                    </div>
+                    
+                    <ul class="space-y-3 mb-8 text-slate-300 text-sm">
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Full source code on GitHub
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Community support
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Deploy anywhere
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-slate-500">✗</span> Enterprise support
+                        </li>
+                    </ul>
+                    
+                    <a href="https://github.com/guanacolabs/011-browserbot" target="_blank" rel="noopener" class="w-full bg-slate-light/20 text-white py-3 rounded-lg hover:bg-indigo-primary/20 transition font-semibold text-center block">
+                        Get Started
+                    </a>
+                </div>
+                
+                <!-- Professional -->
+                <div class="card-glass rounded-2xl p-8 border-2 border-indigo-primary relative">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-indigo-primary text-white px-4 py-1 rounded-full text-xs font-bold">
+                        Popular
+                    </div>
+                    
+                    <h3 class="text-2xl font-bold text-white mb-2">Professional</h3>
+                    <p class="text-slate-400 text-sm mb-6">For production use</p>
+                    
+                    <div class="text-4xl font-bold text-white mb-6">
+                        $299<span class="text-lg text-slate-400 font-normal">/year</span>
+                    </div>
+                    
+                    <ul class="space-y-3 mb-8 text-slate-300 text-sm">
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Everything in Open Source
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Priority GitHub support
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Monthly updates
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Advanced model configurations
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-slate-500">✗</span> Managed hosting
+                        </li>
+                    </ul>
+                    
+                    <button class="w-full bg-indigo-primary text-white py-3 rounded-lg hover:bg-indigo-bright transition font-semibold btn-glow">
+                        Choose Plan
+                    </button>
+                </div>
+                
+                <!-- Enterprise -->
+                <div class="card-glass rounded-2xl p-8 border border-indigo-primary/20 hover:border-indigo-primary/50 transition">
+                    <h3 class="text-2xl font-bold text-white mb-2">Enterprise</h3>
+                    <p class="text-slate-400 text-sm mb-6">Custom solutions</p>
+                    
+                    <div class="text-4xl font-bold text-white mb-6">
+                        Custom<span class="text-lg text-slate-400 font-normal">/month</span>
+                    </div>
+                    
+                    <ul class="space-y-3 mb-8 text-slate-300 text-sm">
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Everything in Professional
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Dedicated support team
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Custom model training
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> Managed hosting
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-indigo-bright">✓</span> SLA & compliance
+                        </li>
+                    </ul>
+                    
+                    <a href="mailto:sales@guanacolabs.com" class="w-full bg-slate-light/20 text-white py-3 rounded-lg hover:bg-indigo-primary/20 transition font-semibold text-center block">
+                        Contact Sales
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 relative overflow-hidden">
+        <div class="hero-glow" style="right: 50%; top: -30%;"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+                Ready to <span class="gradient-text-primary">Automate</span> Your Workflow?
+            </h2>
+            <p class="text-lg text-slate-300 mb-8 max-w-2xl mx-auto">
+                60-second setup. Infinite possibilities. No credit card required.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#installation" class="bg-indigo-primary text-white px-8 py-4 rounded-lg hover:bg-indigo-bright transition font-semibold text-lg btn-glow inline-block">
+                    Get Started Now
+                </a>
+                <a href="https://github.com/guanacolabs/011-browserbot" target="_blank" rel="noopener" class="bg-slate-light/20 border border-slate-light/30 text-white px-8 py-4 rounded-lg hover:border-indigo-primary/50 hover:bg-indigo-primary/10 transition font-semibold text-lg inline-block">
+                    Star on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-dark/50 border-t border-slate-light/10 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-br from-indigo-primary to-cyan-accent rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <span class="font-bold text-white">BrowserBot</span>
+                    </div>
+                    <p class="text-slate-400 text-sm">Autonomous web automation powered by AI.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Product</h4>
+                    <ul class="space-y-2 text-slate-400 text-sm">
+                        <li><a href="#features" class="hover:text-indigo-bright transition">Features</a></li>
+                        <li><a href="#how-it-works" class="hover:text-indigo-bright transition">How It Works</a></li>
+                        <li><a href="#pricing" class="hover:text-indigo-bright transition">Pricing</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Resources</h4>
+                    <ul class="space-y-2 text-slate-400 text-sm">
+                        <li><a href="https://github.com/guanacolabs/011-browserbot" target="_blank" rel="noopener" class="hover:text-indigo-bright transition">GitHub</a></li>
+                        <li><a href="https://github.com/guanacolabs/011-browserbot/wiki" target="_blank" rel="noopener" class="hover:text-indigo-bright transition">Documentation</a></li>
+                        <li><a href="https://github.com/guanacolabs/011-browserbot/issues" target="_blank" rel="noopener" class="hover:text-indigo-bright transition">Issues</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-white mb-4">Legal</h4>
+                    <ul class="space-y-2 text-slate-400 text-sm">
+                        <li><a href="#" class="hover:text-indigo-bright transition">Privacy</a></li>
+                        <li><a href="#" class="hover:text-indigo-bright transition">Terms</a></li>
+                        <li><a href="#" class="hover:text-indigo-bright transition">License</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-slate-light/10 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-slate-400 text-sm">
+                        Copyright 2024 GuanacoLabs. All rights reserved. Licensed under MIT.
+                    </p>
+                    <div class="flex gap-6 mt-4 md:mt-0">
+                        <a href="https://twitter.com" target="_blank" rel="noopener" class="text-slate-400 hover:text-indigo-bright transition">Twitter</a>
+                        <a href="https://github.com/guanacolabs" target="_blank" rel="noopener" class="text-slate-400 hover:text-indigo-bright transition">GitHub</a>
+                        <a href="mailto:info@guanacolabs.com" class="text-slate-400 hover:text-indigo-bright transition">Email</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll offset for fixed nav
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        const offset = 80;
+                        const targetPosition = target.offsetTop - offset;
+                        window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+        
+        // Fade in elements on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        document.querySelectorAll('[class*="fade-in"]').forEach(el => {
+            if (!el.classList.contains('fade-in-1')) observer.observe(el);
+        });
+
+        // Mobile nav
+        let lastScrollTop = 0;
+        const nav = document.querySelector('nav');
+        
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > 100) {
+                nav.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
+            } else {
+                nav.style.boxShadow = 'none';
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+    </script>
+</body>
+</html>
